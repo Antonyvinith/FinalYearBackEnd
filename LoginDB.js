@@ -74,6 +74,28 @@ app.get('/viewVideo', async (req, res) => {
 
 
 
+app.get('/viewUsers', async (req, res) => {
+   
+
+    try {
+        uri="mongodb://localhost:27017/"
+        const client =  await MongoClient.connect(uri);
+        const db = client.db("Data");
+   
+      
+        var user=  await db.collection('users').find({}).toArray();
+        
+        res.send(user.map(user=>user.username))
+        
+       
+
+
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+
 // ================Login API
 
 app.get('/login', async (req, res) => {
