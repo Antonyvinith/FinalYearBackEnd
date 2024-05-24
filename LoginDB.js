@@ -6,6 +6,7 @@ const cors = require('cors');
 // Create an Express app
 const app = express();
 app.use(cors());
+const fs = require("fs").promises;
 
 
 // Use bodyParser middleware to parse JSON request bodies
@@ -128,12 +129,24 @@ app.get('/login', async (req, res) => {
     }
 })
 
+app.get("/read-file", async (req,res) => {
+    try {
+      const filePath = "C:/Users/antony.vinith/Desktop/FinalYearProj/frontend-apparel/PythonDecrypt/TextData/DecryptedFile.txt"
+      var fileData = (await fs.readFile(filePath, "utf-8")).toString();
+      fileData=fileData.toString();
+      res.send({ success: true, data: fileData });
+    } catch (error) {
+      console.error("Error reading file:", error);
+      res.status(500).send({ success: false, error: "Error reading file" });
+    }
+  });
+
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
-
 
 
 
