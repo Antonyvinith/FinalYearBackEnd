@@ -3,13 +3,12 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
-// Create an Express app
 const app = express();
 app.use(cors());
 const fs = require("fs").promises;
+const path=require('path');
 
 
-// Use bodyParser middleware to parse JSON request bodies
 app.use(bodyParser.json());
 
 
@@ -141,6 +140,21 @@ app.get("/read-file", async (req,res) => {
     }
   });
 
+const videoDirectory = path.join("C:/Users/antony.vinith/Desktop/FinalYearProj/frontend-apparel/src/PythonDecrypt");
+
+
+app.get('/api/getVideos', (req, res) => {
+    fs.readdir(videoDirectory, (err, files) => {
+        if (err) {
+            return res.status(500).send('Unable to scan directory: ' + err);
+        }
+ 
+        const videoFiles = files.filter(file => file);
+ 
+        const videoPaths = videoFiles.map(file => path.join(videoDirectory, file));
+        res.json(videoPaths);
+    });
+});
 
 
 const PORT = process.env.PORT || 3000;
